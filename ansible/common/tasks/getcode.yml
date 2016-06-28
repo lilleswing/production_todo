@@ -1,0 +1,26 @@
+---
+- name: Get Application Code
+  git: repo=git@github.com:lilleswing/production_todo.git dest=/home/{{username}}/production_todo force=yes
+  when: ansible_os_family == "Debian"
+
+- name: Get Application Code
+  script: build_virtual_env.sh
+  when: ansible_os_family == "Debian"
+
+- name: Destroy existing deploy
+  file: path=/home/{{application_user}}/{{item}} state=absent
+  with_items:
+    - django
+    - todo-js
+
+- name: Move Django Code to webapps
+  become: true
+  command: mv /home/{{username}}/production_todo/{{item}} /home/{{application_user}}/{{item}}
+  with_items:
+    - django
+    - todo-js
+
+- name: Set correct owners of files
+  become: true
+  file: path=/home/{{application_user}} group={{application_group}} owner={{application_user}} mode=770
+
