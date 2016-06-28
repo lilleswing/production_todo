@@ -1,4 +1,4 @@
-Ansible Playbook for setting up a dev box on xubuntu 16.04
+NOTE nginx user can read application source code
 
 ## Manual TODO before running
 ``` bash
