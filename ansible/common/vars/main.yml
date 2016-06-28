@@ -3,6 +3,9 @@
 username: leswing
 user_email: lilleswing@gmail.com
 
+application_user: webapp
+application_group: webapps
+
 # Needed for monit to monitor ssh intrusions
 sendgrid_username: demo
 sendgrid_password: demo
