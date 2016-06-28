@@ -1,0 +1,11 @@
+---
+- name: Create webapps group
+  become: true
+  group: name=webapps state=present
+  when: ansible_os_family == "Debian"
+
+- name: ensure apt cache is up to date
+  become: true
+  user: name=webapp shell=/usr/bin/zsh groups=webapps append=yes
+  when: ansible_os_family == "Debian"
+
