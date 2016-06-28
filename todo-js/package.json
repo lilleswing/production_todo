@@ -28,8 +28,8 @@
   "scripts": {
     "webpack": "webpack",
     "webpack-server": "webpack-dev-server",
-    "start": "watchify -o js/bundle.js -v -d js/app.min.js",
-    "build": "browserify . -t [envify --NODE_ENV production] | uglifyjs -cm > js/app.min.js"
+    "start": "watchify -o js/bundle.js -v -d js/bundle.min.js",
+    "build": "browserify . -t [envify --NODE_ENV production] | uglifyjs -cm > js/bundle.min.js"
   },
   "author": "Bill Fisher",
   "browserify": {

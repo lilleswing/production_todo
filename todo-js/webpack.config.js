@@ -7,7 +7,7 @@ module.exports = {
     entry: "./js/app.js",
     output: {
         path: __dirname + "/js",
-        filename: "app.min.js"
+        filename: "bundle.min.js"
     },
     plugins: debug ? [] : [
         new webpack.optimize.DedupePlugin(),
