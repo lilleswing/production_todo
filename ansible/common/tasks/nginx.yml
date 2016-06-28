@@ -11,3 +11,18 @@
   when: ansible_os_family == "Debian"
   with_items:
     - nginx
+
+- name: Proxy to django configuration
+  become: true
+  template: src=templates/nginx.sites-available.todo.j2 dest=/etc/nginx/sites-available/todo
+  when: ansible_os_family == "Debian"
+
+- name: symlink to enable
+  become: true
+  file: src=/etc/nginx/sites-available/todo dest=/etc/nginx/sites-enabled/todo state=link
+  when: ansible_os_family == "Debian"
+
+- name: Restart nginx
+  become: true
+  service: name=nginx state=restarted
+  when: ansible_os_family == "Debian"

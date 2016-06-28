@@ -3,11 +3,8 @@
   git: repo=git@github.com:lilleswing/production_todo.git dest=/home/{{username}}/production_todo force=yes
   when: ansible_os_family == "Debian"
 
-- name: Get Application Code
-  script: build_virtual_env.sh
-  when: ansible_os_family == "Debian"
-
 - name: Destroy existing deploy
+  become: true
   file: path=/home/{{application_user}}/{{item}} state=absent
   with_items:
     - django
@@ -22,5 +19,34 @@
 
 - name: Set correct owners of files
   become: true
-  file: path=/home/{{application_user}} group={{application_group}} owner={{application_user}} mode=770
+  file: path=/home/{{application_user}} group={{application_group}} owner={{application_user}} mode=770 recurse=true
+  when: ansible_os_family == "Debian"
 
+- name: Create install virtualenv script
+  become: true
+  template: src=templates/build_virtual_env.sh.j2 dest=/tmp/build_virtual_env.sh owner={{application_user}} group={{application_group}} mode=770
+
+- name: Get Application Code
+  become_user: "{{application_user}}"
+  command: /bin/bash /tmp/build_virtual_env.sh
+  when: ansible_os_family == "Debian"
+
+- name: Set perms on virtualenv
+  become: true
+  file: path=/home/{{application_user}}/django/venv owner={{application_user}} group={{application_group}} mode=770 recurse=true
+  when: ansible_os_family == "Debian"
+
+- name: Drop Gunicorn Start Script
+  become: true
+  template: src=templates/gunicorn_start.sh.j2 dest=/home/{{application_user}}/django/gunicorn_start.sh owner={{application_user}} group={{application_group}} mode=770
+  when: ansible_os_family == "Debian"
+
+- name: Create Log Files
+  become: true
+  file: path= dest=/home/{{application_user}}/django/logs state=directory owner={{application_user}} group={{application_group}} mode=770
+  when: ansible_os_family == "Debian"
+
+- name: Create Log Files
+  become: true
+  file: path= dest=/home/{{application_user}}/django/logs/gunicorn_supervisor.log state=touch owner={{application_user}} group={{application_group}} mode=770
+  when: ansible_os_family == "Debian"

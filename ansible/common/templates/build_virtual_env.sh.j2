@@ -1,0 +1,11 @@
+#!/bin/bash
+cd /home/{{application_user}}/django
+
+virtualenv venv
+source venv/bin/activate
+pip install -r requirements.txt
+
+cd ../todo-js
+npm install
+npm run build
+sed -i -e 's/bundle.js/bundle.min.js/g' index.html

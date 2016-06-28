@@ -6,6 +6,6 @@
 
 - name: Add User
   become: true
-  user: name={{application_user}} shell=/usr/bin/zsh groups={{application_user}} append=yes home=/home/{{application_user}}
+  user: name={{application_user}} shell=/bin/bash groups={{application_user}} append=yes home=/home/{{application_user}}
   when: ansible_os_family == "Debian"
 

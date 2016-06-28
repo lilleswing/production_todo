@@ -3,6 +3,7 @@
 #  - include: vim.yml
 #  - include: firewall.yml
 #  - include: monit.yml
-#  - include: nginx.yml
 #  - include: users.yml
   - include: getcode.yml
+  - include: supervisorctl.yml
+  - include: nginx.yml
